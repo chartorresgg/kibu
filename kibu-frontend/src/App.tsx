@@ -10,6 +10,8 @@ import About from './pages/About'
 import Contact from './pages/Contact'
 import Login from './pages/Login'
 import AdminPanel from './pages/AdminPanel'
+import PaymentOptions from './pages/PaymentOptions'
+import Refunds from './pages/Refunds'
 import './index.css'
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
             <Route path="/contacto" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route path="/admin" element={<AdminPanel />} />
+            <Route path="/opciones-pago" element={<PaymentOptions />} />
+            <Route path="/reembolsos" element={<Refunds />} />
           </Routes>
         </main>
         <Footer />

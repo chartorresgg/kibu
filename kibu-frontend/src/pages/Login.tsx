@@ -91,7 +91,7 @@ const Login: React.FC = () => {
     <div className="min-h-screen bg-white">
       
       {/* Breadcrumb */}
-      <section className="py-6 bg-kibu-light-gray">
+      <section className="py-6 bg-kibu-breadcrumb">
         <div className="kibu-container">
           <nav className="flex items-center space-x-2 text-kibu-gray">
             <Link to="/" className="hover:text-kibu-primary transition-colors">
@@ -149,7 +149,7 @@ const Login: React.FC = () => {
                         value={formData.email}
                         onChange={handleInputChange}
                         className={`kibu-input pl-10 ${errors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
-                        placeholder="Ingresa tu dirección de correo"
+                        placeholder="correo@ejemplo.com"
                       />
                       <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                     </div>
@@ -171,7 +171,7 @@ const Login: React.FC = () => {
                         value={formData.password}
                         onChange={handleInputChange}
                         className={`kibu-input pl-10 pr-10 ${errors.password ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
-                        placeholder="Ingresa tu contraseña de acceso"
+                        placeholder="Ingresa tu contraseña"
                       />
                       <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                       <button
@@ -230,7 +230,10 @@ const Login: React.FC = () => {
                     )}
                   </button>
 
-                 
+                  {/* Información de demo */}
+                  <div className="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-md text-sm">
+                    <strong>Demo:</strong> admin@kibu.com / admin123
+                  </div>
                 </form>
               </div>
             </div>

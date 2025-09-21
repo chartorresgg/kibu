@@ -1,59 +1,36 @@
 // src/pages/ServiceDetail.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Check, Star } from 'lucide-react';
-
-interface ServiceDetailData {
-  id: number;
-  title: string;
-  price: string;
-  description: string;
-  longDescription: string;
-  image: string;
-  isPromotion: boolean;
-  promotionPercentage?: number;
-  originalPrice?: string;
-  availability: number;
-  features: string[];
-  additionalInfo: string;
-  gallery: string[];
-}
+import { servicesData } from '../data/servicesData';
 
 const ServiceDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const [activeTab, setActiveTab] = useState('description');
   
-  // Datos del servicio (en una app real vendría de una API)
-  const serviceData: ServiceDetailData = {
-    id: Number(id),
-    title: "Aplicaciones web",
-    price: "$ 5.500.000",
-    originalPrice: "$ 11.000.000",
-    description: "Creamos aplicaciones web a medida que se adaptan perfectamente a las necesidades de tu empresa. Desde sistemas de gestión y plataformas de e-commerce hasta dashboards administrativos y portales corporativos, desarrollamos soluciones escalables con tecnologías modernas como React, Angular y Node.js. Incluye diseño responsive, integración con bases de datos, APIs personalizadas y hosting optimizado para garantizar máximo rendimiento y seguridad.",
-    longDescription: "En un mundo donde el 86% de los clientes investigan online antes de comprar, tener una presencia digital profesional ya no es opcional. Nuestras aplicaciones web no solo mejoran tu imagen corporativa, sino que automatizan procesos, reducen costos operativos y generan nuevas fuentes de ingresos.",
-    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop&crop=center",
-    isPromotion: true,
-    promotionPercentage: 50,
-    availability: 5,
-    features: [
-      "Diseño UX/UI personalizado",
-      "Desarrollo responsivo (móvil y desktop)",
-      "Panel de administración",
-      "Integración con APIs",
-      "Hosting por 5 meses",
-      "Soporte técnico incluido"
-    ],
-    additionalInfo: "En un mundo donde el 86% de los clientes investigan online antes de comprar, tener una presencia digital profesional ya no es opcional. Nuestras aplicaciones web no solo mejoran tu imagen corporativa, sino que automatizan procesos, reducen costos operativos y generan nuevas fuentes de ingresos.",
-    gallery: [
-      "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600&h=400&fit=crop&crop=center",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&crop=center"
-    ]
-  };
+  // Buscar el servicio por ID
+  const serviceData = servicesData.find(service => service.id === Number(id));
+  
+  // Si no se encuentra el servicio, mostrar error
+  if (!serviceData) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-kibu-dark mb-4">Servicio no encontrado</h2>
+          <p className="text-kibu-gray mb-6">El servicio que buscas no existe o ha sido removido.</p>
+          <Link to="/servicios" className="kibu-btn-primary">
+            Ver todos los servicios
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
       
       {/* Breadcrumb */}
-      <section className="py-6 bg-kibu-light-gray">
+      <section className="py-6 bg-kibu-breadcrumb">
         <div className="kibu-container">
           <nav className="flex items-center space-x-2 text-kibu-gray">
             <Link to="/" className="hover:text-kibu-primary transition-colors">
@@ -87,18 +64,6 @@ const ServiceDetail: React.FC = () => {
                     -{serviceData.promotionPercentage}%
                   </div>
                 )}
-              </div>
-              
-              {/* Galería de imágenes */}
-              <div className="grid grid-cols-2 gap-4">
-                {serviceData.gallery.map((image, index) => (
-                  <img 
-                    key={index}
-                    src={image}
-                    alt={`${serviceData.title} ${index + 1}`}
-                    className="w-full h-32 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
-                  />
-                ))}
               </div>
             </div>
 
@@ -154,20 +119,12 @@ const ServiceDetail: React.FC = () => {
                 </ul>
               </div>
 
-              {/* Información adicional */}
-              <div>
-                <h3 className="text-xl font-semibold text-kibu-dark mb-3">Información adicional</h3>
-                <p className="text-kibu-gray leading-relaxed">
-                  {serviceData.additionalInfo}
-                </p>
-              </div>
-
               {/* Botones de acción */}
               <div className="flex flex-col sm:flex-row gap-4 pt-6">
-              <Link to="/servicios" className="kibu-btn-primary flex-1">
-              Contratar
+              
+                <Link to="/contacto" className="kibu-btn-primary flex-1">
+                Contratar
                 </Link>
-
                 <Link to="/servicios" className="kibu-btn-secondary flex-1 text-center">
                   Servicios
                 </Link>
@@ -178,8 +135,6 @@ const ServiceDetail: React.FC = () => {
                 to="/servicios"
                 className="inline-flex items-center text-kibu-primary hover:text-kibu-accent transition-colors"
               >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Regresar al catálogo
               </Link>
             </div>
           </div>
@@ -194,10 +149,24 @@ const ServiceDetail: React.FC = () => {
             {/* Tabs */}
             <div className="border-b border-gray-200 mb-8">
               <nav className="flex space-x-8">
-                <button className="border-b-2 border-kibu-primary text-kibu-primary py-2 px-1 font-medium">
+                <button 
+                  onClick={() => setActiveTab('description')}
+                  className={`py-2 px-1 font-medium transition-colors ${
+                    activeTab === 'description'
+                      ? 'border-b-2 border-kibu-primary text-kibu-primary'
+                      : 'text-kibu-gray hover:text-kibu-primary'
+                  }`}
+                >
                   Descripción
                 </button>
-                <button className="text-kibu-gray hover:text-kibu-primary py-2 px-1 font-medium transition-colors">
+                <button 
+                  onClick={() => setActiveTab('additional')}
+                  className={`py-2 px-1 font-medium transition-colors ${
+                    activeTab === 'additional'
+                      ? 'border-b-2 border-kibu-primary text-kibu-primary'
+                      : 'text-kibu-gray hover:text-kibu-primary'
+                  }`}
+                >
                   Información adicional
                 </button>
               </nav>
@@ -205,12 +174,40 @@ const ServiceDetail: React.FC = () => {
 
             {/* Contenido del tab */}
             <div className="prose max-w-none">
-              <h3 className="text-2xl font-bold text-kibu-dark mb-4">
-                ¿Por qué tu empresa necesita una aplicación web personalizada?
-              </h3>
-              <p className="text-kibu-gray leading-relaxed">
-                {serviceData.longDescription}
-              </p>
+              {activeTab === 'description' && (
+                <div>
+                  <h3 className="text-2xl font-bold text-kibu-dark mb-4">
+                    ¿Por qué tu empresa necesita una aplicación web personalizada?
+                  </h3>
+                  <p className="text-kibu-gray leading-relaxed mb-8">
+                    {serviceData.longDescription}
+                  </p>
+                  
+                  {/* Galería de imágenes en la descripción */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                    {serviceData.gallery.map((image, index) => (
+                      <div key={index} className="relative rounded-lg overflow-hidden shadow-lg">
+                        <img 
+                          src={image}
+                          alt={`${serviceData.title} ejemplo ${index + 1}`}
+                          className="w-full h-64 object-cover hover:scale-105 transition-transform duration-300 cursor-pointer"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {activeTab === 'additional' && (
+                <div>
+                  <h3 className="text-2xl font-bold text-kibu-dark mb-4">
+                    Información adicional
+                  </h3>
+                  <p className="text-kibu-gray leading-relaxed">
+                    {serviceData.additionalInfo}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>

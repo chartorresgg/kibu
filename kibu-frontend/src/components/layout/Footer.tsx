@@ -4,91 +4,10 @@ import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-kibu-secondary border-t border-gray-200">
-      <div className="kibu-container py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          
-          {/* Logo y descripción */}
-          <div className="col-span-1 md:col-span-1">
-            <div className="flex items-center space-x-3 mb-4">
-              <img 
-                src="/logo.png" 
-                alt="Kibu Logo" 
-                className="h-8 w-auto"
-              />
-              <span className="text-2xl font-bold text-kibu-dark">Kibu</span>
-            </div>
-            
-            <div className="space-y-2 text-kibu-small text-kibu-gray">
-              <p>Calle 61A#9-15 Bogotá D.C.</p>
-              <p>ZIP 11110 33134 COL</p>
-              <p>Correo: servicios@kibu.com.co</p>
-              <p>Teléfono: +57 699 67 83</p>
-            </div>
-          </div>
-
-          {/* Enlaces */}
-          <div>
-            <h3 className="text-kibu-dark font-semibold mb-4">Enlaces</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/" className="text-kibu-gray hover:text-kibu-primary transition-colors">
-                  Inicio
-                </Link>
-              </li>
-              <li>
-                <Link to="/servicios" className="text-kibu-gray hover:text-kibu-primary transition-colors">
-                  Servicios
-                </Link>
-              </li>
-              <li>
-                <Link to="/nosotros" className="text-kibu-gray hover:text-kibu-primary transition-colors">
-                  Nosotros
-                </Link>
-              </li>
-              <li>
-                <Link to="/contacto" className="text-kibu-gray hover:text-kibu-primary transition-colors">
-                  Contacto
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Ayuda */}
-          <div>
-            <h3 className="text-kibu-dark font-semibold mb-4">Ayuda</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/opciones-pago" className="text-kibu-gray hover:text-kibu-primary transition-colors">
-                  Opciones de pago
-                </Link>
-              </li>
-              <li>
-                <Link to="/reembolsos" className="text-kibu-gray hover:text-kibu-primary transition-colors">
-                  Reembolsos
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div>
-            <h3 className="text-kibu-dark font-semibold mb-4">Newsletter</h3>
-            <div className="flex">
-              <input
-                type="email"
-                placeholder="Ingresa tu correo"
-                className="kibu-input flex-1 rounded-r-none"
-              />
-              <button className="bg-kibu-primary text-white px-4 py-2 rounded-r-md hover:bg-kibu-accent transition-colors">
-                Suscribirse
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Garantías */}
-        <div className="border-t border-gray-200 mt-8 pt-8">
+    <footer className="bg-white border-t border-gray-200">
+      {/* Garantías - Ancho completo de la página */}
+      <div className="bg-kibu-guarantee-bg py-8">
+        <div className="kibu-container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             
             {/* Garantía de calidad */}
@@ -144,12 +63,100 @@ const Footer: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Copyright */}
-        <div className="border-t border-gray-200 mt-8 pt-8 text-center">
-          <p className="text-kibu-small text-kibu-gray">
-            2025 Kibu. All rights reserved
-          </p>
+      {/* Información principal del footer */}
+      <div className="kibu-container py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          
+          {/* Logo y descripción */}
+          <div className="col-span-1 md:col-span-1">
+            <div className="flex items-center space-x-3 mb-6">
+              <img 
+                src="/logo.png" 
+                alt="Kibu Logo" 
+                className="h-8 w-auto"
+              />
+              <span className="text-2xl font-bold text-kibu-dark">Kibu</span>
+            </div>
+            
+            <div className="space-y-3 text-kibu-small">
+              <p className="text-kibu-gray">Calle 61A#9-15 Bogotá D.C.</p>
+              <p className="text-kibu-gray">ZIP 11110 33134 COL</p>
+              <p className="text-kibu-gray">Correo: servicios@kibu.com.co</p>
+              <p className="text-kibu-gray">Teléfono: +57 699 67 83</p>
+            </div>
+          </div>
+
+          {/* Enlaces */}
+          <div>
+            <h3 className="text-kibu-dark font-semibold mb-4">Enlaces</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/" className="text-kibu-gray font-bold hover:text-kibu-primary transition-colors">
+                  Inicio
+                </Link>
+              </li>
+              <li>
+                <Link to="/servicios" className="text-kibu-gray font-bold hover:text-kibu-primary transition-colors">
+                  Servicios
+                </Link>
+              </li>
+              <li>
+                <Link to="/nosotros" className="text-kibu-gray font-bold hover:text-kibu-primary transition-colors">
+                  Nosotros
+                </Link>
+              </li>
+              <li>
+                <Link to="/contacto" className="text-kibu-gray font-bold hover:text-kibu-primary transition-colors">
+                  Contacto
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Ayuda */}
+          <div>
+            <h3 className="text-kibu-dark font-semibold mb-4">Ayuda</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/opciones-pago" className="text-kibu-gray font-bold hover:text-kibu-primary transition-colors">
+                  Opciones de pago
+                </Link>
+              </li>
+              <li>
+                <Link to="/reembolsos" className="text-kibu-gray font-bold hover:text-kibu-primary transition-colors">
+                  Reembolsos
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Newsletter */}
+          <div>
+            <h3 className="text-kibu-dark font-semibold mb-4">Newsletter</h3>
+            <div className="flex">
+              <input
+                type="email"
+                placeholder="Ingresa tu correo"
+                className="kibu-input flex-1 rounded-r-none"
+              />
+              <button className="bg-kibu-primary text-white px-4 py-2 rounded-r-md hover:bg-kibu-accent transition-colors">
+                Suscribirse
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Copyright alineado a la izquierda */}
+        <div className="border-t border-gray-200 mt-8 pt-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="col-span-1 md:col-span-1">
+              <p className="text-kibu-small text-kibu-gray">
+                2025 Kibu. All rights reserved
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

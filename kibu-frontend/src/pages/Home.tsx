@@ -69,43 +69,40 @@ const Home: React.FC = () => {
     <div className="min-h-screen bg-white">
       
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-kibu-secondary to-white py-20 lg:py-32">
-        <div className="kibu-container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section className="relative min-h-screen bg-cover bg-center bg-no-repeat" style={{
+        backgroundImage: 'url("https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&h=1080&fit=crop&crop=center")'
+      }}>
+        {/* Overlay oscuro para mejor legibilidad */}
+        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+        
+        <div className="relative kibu-container min-h-screen flex items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
             
-            {/* Contenido del Hero */}
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <p className="text-kibu-primary font-medium tracking-wide uppercase">
+            {/* Espacio vacío para balance visual - AHORA A LA IZQUIERDA */}
+            <div className="hidden lg:block"></div>
+
+            {/* Contenido del Hero en recuadro - AHORA A LA DERECHA */}
+            <div className="bg-white bg-opacity-95 backdrop-blur-sm rounded-2xl p-8 lg:p-12 shadow-2xl">
+              <div className="space-y-6">
+                <p className="text-base lg:text-lg text-kibu-gray">
                   ¡Te esperamos!
                 </p>
-                <h1 className="text-4xl lg:text-6xl font-bold text-kibu-dark leading-tight">
-                  Soluciona con{' '}
-                  <span className="text-kibu-primary">Kibu</span>
+                <h1 className="text-3xl lg:text-5xl font-bold text-kibu-dark leading-tight">
+                 
+                  <span className="text-kibu-primary">Soluciona con Kibu</span>
                 </h1>
-                <p className="text-lg text-kibu-gray max-w-xl">
+                <p className="text-base lg:text-lg text-kibu-gray">
                   Kibu desarrolla software personalizado y soluciones tecnológicas para empresas. 
                   Creamos aplicaciones web, móviles y sistemas que automatizan procesos e impulsan 
                   el crecimiento de tu negocio.
                 </p>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/servicios" className="kibu-btn-primary inline-flex items-center">
-                  CONSULTAR
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Imagen del Hero */}
-            <div className="relative">
-              <div className="bg-white rounded-2xl shadow-2xl p-8 transform rotate-3 hover:rotate-0 transition-transform duration-300">
-                <img 
-                  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&h=400&fit=crop&crop=center"
-                  alt="Kibu Technology Solutions"
-                  className="w-full h-auto rounded-lg"
-                />
+                
+                <div className="pt-4">
+                  <Link to="/servicios" className="kibu-btn-primary inline-flex items-center text-lg px-8 py-4">
+                    CONSULTAR
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -136,7 +133,7 @@ const Home: React.FC = () => {
                   <img 
                     src={service.image}
                     alt={service.title}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-96 object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   {service.isNew && (
                     <div className="absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded-full text-sm font-medium">
@@ -190,9 +187,25 @@ const Home: React.FC = () => {
                 Conoce más de Kibu
               </h2>
               <p className="text-lg text-kibu-gray">
-                Conoce quiénes somos y recibe un servicio personalizado.
+                Conoce quiénes somos y recibe un servicio personalizado. Descubre nuestro equipo, 
+                tecnología y los proyectos que nos hacen líderes en soluciones digitales.
               </p>
-            
+              
+              {/* Características destacadas */}
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-kibu-primary rounded-full"></div>
+                  <span className="text-kibu-gray">Más de 5 años de experiencia</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-kibu-primary rounded-full"></div>
+                  <span className="text-kibu-gray">500+ proyectos completados</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-kibu-primary rounded-full"></div>
+                  <span className="text-kibu-gray">Tecnologías de vanguardia</span>
+                </div>
+              </div>
 
               <Link to="/nosotros" className="kibu-btn-primary inline-flex items-center">
                 Consultar

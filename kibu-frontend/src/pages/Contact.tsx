@@ -30,10 +30,15 @@ const Contact: React.FC = () => {
     'Aplicaciones Móviles',
     'Transformación Digital',
     'Inteligencia Artificial',
-    'Análisis de Datos',
+    'Tienda Online',
+    'Seguridad de datos',
+    'DevOps',
     'Servicios Cloud',
-    'Consultoría IT',
-    'Otro'
+    'Análisis de Datos',
+    'Desarrollo de APIs',
+    'Microservicios',
+    'Soporte Técnico',
+    'Otros'
   ];
 
   const contactInfo = [
@@ -165,24 +170,21 @@ const Contact: React.FC = () => {
     <div className="min-h-screen bg-white">
       
       {/* Header de la página */}
-      <section className="bg-gradient-to-r from-kibu-secondary to-white py-16">
-        <div className="kibu-container">
-          <div className="text-center">
-            <h1 className="text-4xl lg:text-5xl font-bold text-kibu-dark mb-4">
-              Contacto
-            </h1>
-            
-            {/* Breadcrumb */}
-            <nav className="flex justify-center items-center space-x-2 text-kibu-gray">
-              <Link to="/" className="hover:text-kibu-primary transition-colors">
-                Inicio
-              </Link>
-              <span>{'>'}</span>
-              <span className="text-kibu-dark font-medium">Contacto</span>
-            </nav>
-          </div>
-        </div>
-      </section>
+      <section className="relative py-24 bg-cover bg-center bg-no-repeat" style={{
+  backgroundImage: 'url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")'
+}}>
+  <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+  <div className="relative kibu-container">
+    <div className="text-center text-white">
+      <h1 className="text-4xl lg:text-5xl font-bold mb-4">Contacto</h1>
+      <nav className="flex justify-center items-center space-x-2 text-gray-200">
+        <Link to="/" className="hover:text-white transition-colors">Inicio</Link>
+        <span>{'>'}</span>
+        <span className="text-white font-medium">Contacto</span>
+      </nav>
+    </div>
+  </div>
+</section>
 
       {/* Contenido principal */}
       <section className="py-20">
@@ -377,14 +379,7 @@ const Contact: React.FC = () => {
                 </div>
               </div>
 
-              {/* Mapa (placeholder) */}
-              <div className="bg-gray-200 rounded-lg h-64 flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                  <p className="text-gray-500">Mapa de ubicación</p>
-                  <p className="text-sm text-gray-400">Calle 61A#9-15 Bogotá D.C.</p>
-                </div>
-              </div>
+          
 
               {/* Horario destacado */}
               <div className="bg-kibu-light-gray rounded-lg p-6">

@@ -16,6 +16,8 @@ export default {
           'light-gray': '#F9FAFB', // Fondos claros
           'white': '#FFFFFF',
           'accent': '#D4A574',     // Dorado más claro
+          'breadcrumb': '#F9F1E7', // Color específico para breadcrumbs
+          'guarantee-bg': '#FCF8F3', // Color de fondo para garantías
         }
       },
       fontFamily: {
