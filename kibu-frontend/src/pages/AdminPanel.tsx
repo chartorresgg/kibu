@@ -171,35 +171,8 @@ const AdminPanel: React.FC = () => {
             
             {/* Logo y título */}
             <div className="flex items-center space-x-4">
-              <Link to="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8">
-                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                    <path d="M4 8L12 16L4 24V8Z" fill="#B8860B" />
-                    <path d="M12 4L20 12L12 20V4Z" fill="#D4A574" />
-                    <path d="M20 8L28 16L20 24V8Z" fill="#B8860B" />
-                  </svg>
-                </div>
-                <span className="text-xl font-bold text-kibu-dark">Kibu</span>
-              </Link>
-              <span className="text-kibu-gray">|</span>
               <h1 className="text-xl font-semibold text-kibu-dark">Panel de Administración</h1>
             </div>
-
-            {/* Navegación de admin */}
-            <nav className="hidden md:flex items-center space-x-6">
-              <Link to="/" className="text-kibu-gray hover:text-kibu-primary transition-colors">
-                Inicio
-              </Link>
-              <Link to="/servicios" className="text-kibu-gray hover:text-kibu-primary transition-colors">
-                Servicios
-              </Link>
-              <Link to="/nosotros" className="text-kibu-gray hover:text-kibu-primary transition-colors">
-                Nosotros
-              </Link>
-              <Link to="/contacto" className="text-kibu-gray hover:text-kibu-primary transition-colors">
-                Contacto
-              </Link>
-            </nav>
 
             {/* Usuario y logout */}
             <div className="flex items-center space-x-4">

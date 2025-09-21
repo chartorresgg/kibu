@@ -12,7 +12,7 @@ const Home: React.FC = () => {
       title: "Aplicaciones Web",
       description: "Aplicaciones estáticas",
       price: "$ 5.500.000",
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=300&fit=crop&crop=center", 
+      image: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=400&h=300&fit=crop&crop=center", 
       isNew: false
     },
     {
@@ -20,7 +20,7 @@ const Home: React.FC = () => {
       title: "Análisis de datos", 
       description: "Tome decisiones inteligentes",
       price: "$ 8.000.000",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop&crop=center",
+      image: "https://images.unsplash.com/photo-1584472666879-7d92db132958?w=400&h=300&fit=crop&crop=center",
       isNew: false
     },
     {
@@ -28,7 +28,7 @@ const Home: React.FC = () => {
       title: "Aplicaciones móviles",
       description: "Para iOS y Android", 
       price: "$ 4.000.000",
-      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop&crop=center",
+      image: "https://images.unsplash.com/photo-1647964184283-76030bd9d6e2?w=400&h=300&fit=crop&crop=center",
       isNew: true
     }
   ];
@@ -70,7 +70,7 @@ const Home: React.FC = () => {
       
       {/* Hero Section */}
       <section className="relative min-h-screen bg-cover bg-center bg-no-repeat" style={{
-        backgroundImage: 'url("https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&h=1080&fit=crop&crop=center")'
+        backgroundImage: 'url("https://images.unsplash.com/photo-1512758017271-d7b84c2113f1?w=1920&h=1080&fit=crop&crop=center")'
       }}>
         {/* Overlay oscuro para mejor legibilidad */}
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>

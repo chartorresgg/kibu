@@ -91,7 +91,7 @@ const Footer: React.FC = () => {
           {/* Enlaces */}
           <div>
             <h3 className="text-kibu-dark font-semibold mb-4">Enlaces</h3>
-            <ul className="space-y-2">
+            <ul className="space-y-10">
               <li>
                 <Link to="/" className="text-kibu-gray font-bold hover:text-kibu-primary transition-colors">
                   Inicio
@@ -118,7 +118,7 @@ const Footer: React.FC = () => {
           {/* Ayuda */}
           <div>
             <h3 className="text-kibu-dark font-semibold mb-4">Ayuda</h3>
-            <ul className="space-y-2">
+            <ul className="space-y-10">
               <li>
                 <Link to="/opciones-pago" className="text-kibu-gray font-bold hover:text-kibu-primary transition-colors">
                   Opciones de pago

@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
             </Link>
           </div>
 
-          {/* Menú de navegación - Desktop */}
+          {/* Menú de navegación centrado - Desktop */}
           <div className="hidden md:block flex-1">
             <div className="flex items-center justify-center space-x-8">
               <Link
@@ -56,18 +56,17 @@ const Navbar: React.FC = () => {
               >
                 Contacto
               </Link>
+              <Link
+                to="/login"
+                className="kibu-btn-primary"
+              >
+                Login
+              </Link>
             </div>
           </div>
 
-          {/* Botón Login */}
-          <div className="hidden md:block">
-            <Link
-              to="/login"
-              className="kibu-btn-primary"
-            >
-              Login
-            </Link>
-          </div>
+          {/* Espacio en blanco para balance visual */}
+          <div className="hidden md:block flex-shrink-0 w-32"></div>
 
           {/* Botón de menú móvil */}
           <div className="md:hidden">
