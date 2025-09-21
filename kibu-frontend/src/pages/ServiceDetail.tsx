@@ -164,9 +164,10 @@ const ServiceDetail: React.FC = () => {
 
               {/* Botones de acción */}
               <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                <button className="kibu-btn-primary flex-1">
-                  Contratar
-                </button>
+              <Link to="/servicios" className="kibu-btn-primary flex-1">
+              Contratar
+                </Link>
+
                 <Link to="/servicios" className="kibu-btn-secondary flex-1 text-center">
                   Servicios
                 </Link>

@@ -51,7 +51,7 @@ const Services: React.FC = () => {
       id: 4,
       title: "Inteligencia Artificial",
       description: "Personalizada a tu empresa",
-      price: "COP $ 40.000.000",
+      price: "$ 40.000.000",
       image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=300&fit=crop&crop=center",
       isPromotion: false,
       promotionLabel: "New",
