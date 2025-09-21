@@ -83,7 +83,7 @@ const PaymentOptions: React.FC = () => {
               Facilidades de Pago Flexibles
             </h2>
             <p className="text-lg text-kibu-gray leading-relaxed">
-              En KiBu entendemos que cada proyecto es único, por eso ofrecemos múltiples opciones 
+              En Kibu entendemos que cada proyecto es único, por eso ofrecemos múltiples opciones 
               de pago para que puedas elegir la que mejor se adapte a tus necesidades empresariales. 
               Todos nuestros métodos de pago son seguros y están respaldados por las mejores 
               tecnologías de encriptación.
@@ -221,7 +221,7 @@ const PaymentOptions: React.FC = () => {
             <div className="space-y-4">
               <div className="flex justify-between py-2 border-b border-gray-200">
                 <span className="font-medium text-kibu-dark">Razón Social:</span>
-                <span className="text-kibu-gray">KiBu Soluciones Tecnológicas S.A.S.</span>
+                <span className="text-kibu-gray">Kibu Soluciones Tecnológicas S.A.S.</span>
               </div>
               <div className="flex justify-between py-2 border-b border-gray-200">
                 <span className="font-medium text-kibu-dark">NIT:</span>

@@ -91,7 +91,7 @@ const Refunds: React.FC = () => {
               Compromiso con la Satisfacción del Cliente
             </h2>
             <p className="text-lg text-kibu-gray leading-relaxed mb-8">
-              En KiBu, nuestra prioridad es la satisfacción de nuestros clientes. Entendemos que 
+              En Kibu, nuestra prioridad es la satisfacción de nuestros clientes. Entendemos que 
               en ocasiones pueden surgir situaciones que requieran la devolución de pagos. Por eso, 
               hemos establecido una política clara y justa de reembolsos que protege tanto a nuestros 
               clientes como a nuestra empresa.
