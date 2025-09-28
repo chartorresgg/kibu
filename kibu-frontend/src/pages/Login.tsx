@@ -238,7 +238,7 @@ const Login: React.FC = () => {
             <div className="hidden lg:block">
               <div className="relative">
                 <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop&crop=center"
+                  src="https://images.unsplash.com/photo-1622252190699-7662e7856522?w=600&h=800&fit=crop&crop=center"
                   alt="Administrador Kibu"
                   className="w-full h-auto rounded-2xl shadow-2xl"
                 />

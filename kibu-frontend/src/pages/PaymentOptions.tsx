@@ -55,21 +55,17 @@ const PaymentOptions: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       
-      {/* Header de la página */}
-      <section className="bg-gradient-to-r from-kibu-secondary to-white py-16">
-        <div className="kibu-container">
-          <div className="text-center">
-            <h1 className="text-4xl lg:text-5xl font-bold text-kibu-dark mb-4">
-              Opciones de Pago
-            </h1>
-            
-            {/* Breadcrumb */}
-            <nav className="flex justify-center items-center space-x-2 text-kibu-gray">
-              <Link to="/" className="hover:text-kibu-primary transition-colors">
-                Inicio
-              </Link>
+      <section className="relative py-24 bg-cover bg-center bg-no-repeat" style={{
+        backgroundImage: 'url("https://images.unsplash.com/photo-1556740714-a8395b3bf30f?w=1920&h=600&fit=crop&crop=center")'
+      }}>
+        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div className="relative kibu-container">
+          <div className="text-center text-white">
+            <h1 className="text-4xl lg:text-5xl font-bold mb-4">Opciones de pago</h1>
+            <nav className="flex justify-center items-center space-x-2 text-gray-200">
+              <Link to="/" className="hover:text-white transition-colors">Inicio</Link>
               <span>{'>'}</span>
-              <span className="text-kibu-dark font-medium">Opciones de Pago</span>
+              <span className="text-white font-medium">Opciones de pago</span>
             </nav>
           </div>
         </div>
