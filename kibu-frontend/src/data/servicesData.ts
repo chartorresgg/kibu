@@ -24,7 +24,7 @@ export interface ServiceDetailData {
       originalPrice: "$ 11.000.000",
       description: "Creamos aplicaciones web a medida que se adaptan perfectamente a las necesidades de tu empresa. Desde sistemas de gestión y plataformas de e-commerce hasta dashboards administrativos y portales corporativos.",
       longDescription: "En un mundo donde el 86% de los clientes investigan online antes de comprar, tener una presencia digital profesional ya no es opcional. Nuestras aplicaciones web no solo mejoran tu imagen corporativa, sino que automatizan procesos, reducen costos operativos y generan nuevas fuentes de ingresos.",
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop&crop=center",
+      image: "https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&h=400&fit=crop&crop=center",
       isPromotion: true,
       promotionPercentage: 50,
       availability: 5,

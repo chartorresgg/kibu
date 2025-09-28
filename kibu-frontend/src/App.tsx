@@ -1,8 +1,8 @@
-// src/App.tsx
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
+import ScrollToTop from './components/common/ScrollToTop'
 import Home from './pages/Home'
 import Services from './pages/Services'
 import ServiceDetail from './pages/ServiceDetail'
@@ -17,6 +17,7 @@ import './index.css'
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-grow">

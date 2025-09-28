@@ -44,13 +44,13 @@ const About: React.FC = () => {
     {
       name: 'Ana García',
       position: 'CTO',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face',
+      image: 'https://images.unsplash.com/photo-1590650153855-d9e808231d41?w=300&h=300&fit=crop&crop=face',
       description: 'Líder técnica especializada en arquitectura de software y DevOps.'
     },
     {
       name: 'Miguel Torres',
       position: 'Lead Developer',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face',
+      image: 'https://images.unsplash.com/photo-1677159828965-3b852a9eeabf?w=300&h=300&fit=crop&crop=face',
       description: 'Desarrollador full-stack con expertise en React, Node.js y cloud computing.'
     },
     {

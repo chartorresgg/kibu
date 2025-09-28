@@ -1,0 +1,34 @@
+{
+    "services": [
+      {
+        "id": 1,
+        "nombre": "Aplicaciones Web estáticas",
+        "precio": "5500000",
+        "promocion": true,
+        "porcentajeDescuento": 50,
+        "descripcion": "Creamos aplicaciones web a medida que se adaptan perfectamente a las necesidades de tu empresa.",
+        "informacionAdicional": "En un mundo donde el 86% de los clientes investigan online antes de comprar, tener una presencia digital profesional ya no es opcional.",
+        "caracteristicas": "Diseño UX/UI personalizado, Desarrollo responsivo (móvil y desktop), Panel de administración, Integración con APIs, Hosting por 5 meses, Soporte técnico incluido",
+        "imagen": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=300&fit=crop",
+        "categoria": "web",
+        "disponible": 5,
+        "fechaCreacion": "2024-01-15",
+        "activo": true
+      },
+      {
+        "id": 2,
+        "nombre": "Aplicaciones Móviles", 
+        "precio": "4000000",
+        "promocion": true,
+        "porcentajeDescuento": 50,
+        "descripcion": "Apps nativas para iOS y Android con diseño intuitivo y funcionalidades avanzadas.",
+        "informacionAdicional": "Las aplicaciones móviles son esenciales para llegar a tus clientes donde pasan más tiempo: en sus dispositivos móviles.",
+        "caracteristicas": "Desarrollo nativo iOS/Android, UI/UX optimizada para móvil, Push notifications, Integración con APIs, Publicación en stores, Mantenimiento incluido",
+        "imagen": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=300&fit=crop",
+        "categoria": "mobile",
+        "disponible": 3,
+        "fechaCreacion": "2024-02-01",
+        "activo": true
+      }
+    ]
+  }

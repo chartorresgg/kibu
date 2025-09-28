@@ -1,60 +1,24 @@
 // src/pages/AdminPanel.tsx
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, LogOut, User, Edit, Trash2, Eye, ChevronDown } from 'lucide-react';
-// Prueba una de estas importaciones según tu archivo servicesData.ts:
-import {servicesData} from '../data/servicesData'; // Si es exportación por defecto
-// O si tienes exportación nombrada diferente, usa:
-// import { services } from '../data/servicesData';
-
-interface AdminService {
-  id: number;
-  nombre: string;
-  precio: string;
-  promocion: boolean;
-  porcentajeDescuento: number;
-  descripcion: string;
-  informacionAdicional: string;
-  caracteristicas: string;
-  imagen: string;
-  categoria: string;
-  disponible: number;
-}
+import { Plus, Edit, Trash2, Search, LogOut, User, Loader, Download, Upload, Eye, EyeOff } from 'lucide-react';
+import ServiceForm from '../components/admin/ServiceForm';
+import type { AdminService, ServiceFormData } from '../types/service';
+import { dataService } from '../services/dataService';
 
 const AdminPanel: React.FC = () => {
   const navigate = useNavigate();
   const [services, setServices] = useState<AdminService[]>([]);
+  const [messages, setMessages] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState<'services' | 'messages'>('services');
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedServiceId, setSelectedServiceId] = useState<number | null>(null);
-  const [showDetailModal, setShowDetailModal] = useState(false);
-  const [detailService, setDetailService] = useState<AdminService | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [showServiceForm, setShowServiceForm] = useState(false);
+  const [modalType, setModalType] = useState<'delete'>('delete');
+  const [formMode, setFormMode] = useState<'create' | 'edit'>('create');
+  const [selectedService, setSelectedService] = useState<AdminService | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  // Estados del formulario de agregar
-  const [formData, setFormData] = useState({
-    nombre: '',
-    precio: '',
-    promocion: false,
-    porcentajeDescuento: 0,
-    descripcion: '',
-    caracteristicas: '',
-    informacionAdicional: ''
-  });
-
-  // Convertir datos de servicesData.ts al formato AdminService
-  const convertToAdminService = (service: any): AdminService => ({
-    id: service.id,
-    nombre: service.title,
-    precio: service.price.toString(),
-    promocion: service.isPromotion,
-    porcentajeDescuento: service.discountPercentage,
-    descripcion: service.description,
-    informacionAdicional: service.additionalInfo,
-    caracteristicas: service.features.join(', '),
-    imagen: service.image,
-    categoria: service.category,
-    disponible: service.available
-  });
 
   useEffect(() => {
     // Verificar autenticación
@@ -64,13 +28,32 @@ const AdminPanel: React.FC = () => {
       return;
     }
 
-    // Cargar servicios desde servicesData.ts
-    // Usa una de estas opciones según tu archivo:
-    const initialServices = servicesData.map(convertToAdminService); // Si es exportación por defecto
-    // O si tienes exportación nombrada diferente:
-    // const initialServices = services.map(convertToAdminService);
-    setServices(initialServices);
+    // Cargar servicios y mensajes
+    loadServices();
+    loadMessages();
   }, [navigate]);
+
+  const loadServices = async () => {
+    try {
+      setLoading(true);
+      const data = await dataService.getAllServices();
+      setServices(data);
+    } catch (error) {
+      console.error('Error loading services:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadMessages = async () => {
+    try {
+      const data = await dataService.getAllMessages();
+      setMessages(data);
+      console.log('Mensajes cargados:', data); // Debug
+    } catch (error) {
+      console.error('Error loading messages:', error);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('kibu_admin_token');
@@ -83,83 +66,113 @@ const AdminPanel: React.FC = () => {
     service.categoria.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const selectedService = services.find(service => service.id === selectedServiceId);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
-    }));
+  const openModal = (type: 'delete', service?: AdminService) => {
+    setModalType(type);
+    setSelectedService(service || null);
+    setShowModal(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newService: AdminService = {
-      ...formData,
-      id: Math.max(...services.map(s => s.id), 0) + 1,
-      precio: formData.precio,
-      porcentajeDescuento: Number(formData.porcentajeDescuento),
-      imagen: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=300&fit=crop",
-      categoria: "web",
-      disponible: 1
-    };
-    
-    setServices(prev => [...prev, newService]);
-    
-    // Limpiar formulario
-    setFormData({
-      nombre: '',
-      precio: '',
-      promocion: false,
-      porcentajeDescuento: 0,
-      descripcion: '',
-      caracteristicas: '',
-      informacionAdicional: ''
-    });
+  const openServiceForm = (mode: 'create' | 'edit', service?: AdminService) => {
+    setFormMode(mode);
+    setSelectedService(service || null);
+    setShowServiceForm(true);
   };
 
-  const openDetailModal = (service: AdminService) => {
-    setDetailService(service);
-    setShowDetailModal(true);
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedService(null);
   };
 
-  const closeDetailModal = () => {
-    setShowDetailModal(false);
-    setDetailService(null);
+  const closeServiceForm = () => {
+    setShowServiceForm(false);
+    setSelectedService(null);
   };
 
-  const handleEdit = (service: AdminService) => {
-    setFormData({
-      nombre: service.nombre,
-      precio: service.precio,
-      promocion: service.promocion,
-      porcentajeDescuento: service.porcentajeDescuento,
-      descripcion: service.descripcion,
-      caracteristicas: service.caracteristicas,
-      informacionAdicional: service.informacionAdicional
-    });
-  };
-
-  const handleDelete = (id: number) => {
-    setServices(prev => prev.filter(service => service.id !== id));
-    if (selectedServiceId === id) {
-      setSelectedServiceId(null);
+  const handleSaveService = async (serviceData: ServiceFormData) => {
+    try {
+      if (formMode === 'create') {
+        const newService = await dataService.createService(serviceData);
+        setServices(prev => [...prev, newService]);
+      } else if (selectedService) {
+        const updatedService = await dataService.updateService(selectedService.id, serviceData);
+        setServices(prev => prev.map(service => 
+          service.id === updatedService.id ? updatedService : service
+        ));
+      }
+      closeServiceForm();
+    } catch (error) {
+      console.error('Error saving service:', error);
     }
   };
 
-  const formatPrice = (price: string) => {
-    const numericPrice = parseInt(price, 10);
-    if (isNaN(numericPrice)) return '0';
-    return new Intl.NumberFormat('es-CO').format(numericPrice);
+  const handleDelete = async (id: number) => {
+    setIsLoading(true);
+    try {
+      const success = await dataService.deleteService(id);
+      if (success) {
+        setServices(prev => prev.filter(service => service.id !== id));
+        closeModal();
+      }
+    } catch (error) {
+      console.error('Error deleting service:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const calculateFinalPrice = (price: string, discount: number) => {
-    const basePrice = parseInt(price, 10);
-    if (isNaN(basePrice)) return '0';
-    const finalPrice = basePrice * (1 - discount / 100);
-    return new Intl.NumberFormat('es-CO').format(Math.round(finalPrice));
+  const handleMarkAsRead = async (messageId: number) => {
+    try {
+      await dataService.markMessageAsRead(messageId);
+      setMessages(prev => prev.map(message => 
+        message.id === messageId ? { ...message, leido: true } : message
+      ));
+    } catch (error) {
+      console.error('Error marking message as read:', error);
+    }
   };
+
+  const handleExportData = () => {
+    const dataToExport = dataService.exportData();
+    const blob = new Blob([dataToExport], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `kibu_backup_${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImportData = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      const success = dataService.importData(content);
+      if (success) {
+        loadServices(); // Recargar servicios
+        loadMessages(); // Recargar mensajes
+        alert('Datos importados exitosamente');
+      } else {
+        alert('Error al importar datos');
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-kibu-light-gray flex items-center justify-center">
+        <div className="text-center">
+          <Loader className="w-8 h-8 animate-spin text-kibu-primary mx-auto mb-4" />
+          <p className="text-kibu-gray">Cargando panel de administración...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-kibu-light-gray">
@@ -169,10 +182,11 @@ const AdminPanel: React.FC = () => {
         <div className="kibu-container">
           <div className="flex items-center justify-between h-16">
             
-            {/* Logo y título */}
-            <div className="flex items-center space-x-4">
-              <h1 className="text-xl font-semibold text-kibu-dark">Panel de Administración</h1>
-            </div>
+            
+
+            {/* Navegación de admin */}
+            <nav className="hidden md:flex items-center space-x-6">
+            </nav>
 
             {/* Usuario y logout */}
             <div className="flex items-center space-x-4">
@@ -192,522 +206,329 @@ const AdminPanel: React.FC = () => {
         </div>
       </header>
 
-      {/* Header de la página */}
-      <section className="relative py-24 bg-cover bg-center bg-no-repeat" style={{
-        backgroundImage: 'url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")'
-      }}>
-        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-        <div className="relative kibu-container">
-          <div className="text-center text-white">
-            <h1 className="text-4xl lg:text-5xl font-bold mb-4">Panel de Administración</h1>
-            <nav className="flex justify-center items-center space-x-2 text-gray-200">
-              <Link to="/" className="hover:text-white transition-colors">Inicio</Link>
-              <span>{'>'}</span>
-              <span className="text-white font-medium">Admin</span>
-            </nav>
-          </div>
-        </div>
-      </section>
-
       {/* Contenido principal */}
       <main className="py-8">
         <div className="kibu-container">
           
-          {/* Grid principal del mockup */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            
-            {/* Lado izquierdo - Agregar servicio */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">Agregar servicio</h2>
+          {/* Header de la página */}
+          <div className="bg-white rounded-lg shadow-kibu-card p-6 mb-8">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nombre del servicio
-                  </label>
-                  <input
-                    type="text"
-                    name="nombre"
-                    value={formData.nombre}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-kibu-primary focus:border-transparent"
-                    required
-                  />
-                </div>
+              <div>
+                <h2 className="text-2xl font-bold text-kibu-dark mb-2">
+                  Panel de Administración
+                </h2>
+                <nav className="flex items-center space-x-2 text-sm text-kibu-gray">
+                  <Link to="/" className="hover:text-kibu-primary transition-colors">
+                    Inicio
+                  </Link>
+                  <span>{'>'}</span>
+                  <span className="text-kibu-dark">Admin</span>
+                </nav>
+              </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Precio
-                  </label>
-                  <input
-                    type="number"
-                    name="precio"
-                    value={formData.precio}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-kibu-primary focus:border-transparent"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Promoción
-                  </label>
-                  <div className="relative">
-                    <select
-                      name="promocion"
-                      value={formData.promocion ? 'Si' : 'No'}
-                      onChange={(e) => setFormData(prev => ({ ...prev, promocion: e.target.value === 'Si' }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-kibu-primary focus:border-transparent appearance-none bg-white"
-                    >
-                      <option value="Si">Si / No</option>
-                      <option value="Si">Si</option>
-                      <option value="No">No</option>
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Porcentaje de descuento
-                  </label>
-                  <input
-                    type="number"
-                    name="porcentajeDescuento"
-                    value={formData.porcentajeDescuento}
-                    onChange={handleInputChange}
-                    min="0"
-                    max="100"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-kibu-primary focus:border-transparent"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Descripción
-                  </label>
-                  <textarea
-                    name="descripcion"
-                    value={formData.descripcion}
-                    onChange={handleInputChange}
-                    rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-kibu-primary focus:border-transparent resize-none"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Características
-                  </label>
-                  <textarea
-                    name="caracteristicas"
-                    value={formData.caracteristicas}
-                    onChange={handleInputChange}
-                    rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-kibu-primary focus:border-transparent resize-none"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Información adicional
-                  </label>
-                  <textarea
-                    name="informacionAdicional"
-                    value={formData.informacionAdicional}
-                    onChange={handleInputChange}
-                    rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-kibu-primary focus:border-transparent resize-none"
-                    required
-                  />
-                </div>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={() => openServiceForm('create')}
+                  className="kibu-btn-primary inline-flex items-center"
+                >
+                  <Plus className="w-5 h-5 mr-2" />
+                  Agregar servicio
+                </button>
 
                 <button
-                  type="submit"
-                  className="w-full bg-kibu-primary text-white py-3 px-4 rounded-md hover:bg-kibu-accent transition-colors font-medium"
+                  onClick={handleExportData}
+                  className="kibu-btn-secondary inline-flex items-center"
                 >
-                  Agregar
+                  <Download className="w-5 h-5 mr-2" />
+                  Exportar datos
                 </button>
-              </form>
-            </div>
 
-            {/* Lado derecho - Seleccionar servicio */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">Seleccionar servicio</h2>
-              
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Escoja un servicio
-                  </label>
-                  <div className="relative">
-                    <select
-                      value={selectedServiceId || ''}
-                      onChange={(e) => setSelectedServiceId(Number(e.target.value) || null)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-kibu-primary focus:border-transparent appearance-none bg-white"
-                    >
-                      <option value="">Nombre del servicio</option>
-                      {services.map(service => (
-                        <option key={service.id} value={service.id}>
-                          {service.nombre}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
-                  </div>
-                </div>
-
-                <div className="flex space-x-3">
-                  <button 
-                    onClick={() => selectedService && handleEdit(selectedService)}
-                    disabled={!selectedService}
-                    className="flex-1 bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Editar
-                  </button>
-                  <button 
-                    onClick={() => selectedService && handleDelete(selectedService.id)}
-                    disabled={!selectedService}
-                    className="flex-1 bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Eliminar
-                  </button>
-                  <button 
-                    onClick={() => selectedService && openDetailModal(selectedService)}
-                    disabled={!selectedService}
-                    className="flex-1 bg-white border border-gray-300 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Consultar
-                  </button>
-                </div>
-
-                {selectedService && (
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-bold text-gray-800">{selectedService.nombre}</h3>
-                    
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Precio normal</span>
-                        <span className="font-medium">COP {formatPrice(selectedService.precio)}</span>
-                      </div>
-                      {selectedService.promocion && (
-                        <>
-                          <div className="flex justify-between">
-                            <span className="text-gray-600">Cuenta con promoción</span>
-                            <span className="text-kibu-primary font-medium">{selectedService.porcentajeDescuento}%</span>
-                          </div>
-                          <div className="flex justify-between border-t pt-2">
-                            <span className="font-medium">Total</span>
-                            <span className="text-kibu-primary font-bold text-lg">
-                              COP {calculateFinalPrice(selectedService.precio, selectedService.porcentajeDescuento)}
-                            </span>
-                          </div>
-                        </>
-                      )}
-                    </div>
-
-                    <div>
-                      <h4 className="font-medium text-gray-800 mb-2">Descripción</h4>
-                      <p className="text-gray-600 text-sm leading-relaxed">
-                        {selectedService.descripcion}
-                      </p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-medium text-gray-800 mb-2">Características</h4>
-                      <ul className="space-y-1">
-                        {selectedService.caracteristicas.split(',').map((item, index) => (
-                          <li key={index} className="text-gray-600 text-sm flex items-start">
-                            <span className="text-kibu-primary mr-2">•</span>
-                            {item.trim()}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h4 className="font-medium text-gray-800 mb-2">Información adicional</h4>
-                      <p className="text-gray-600 text-sm leading-relaxed">
-                        {selectedService.informacionAdicional}
-                      </p>
-                    </div>
-                  </div>
-                )}
+                <label className="kibu-btn-secondary inline-flex items-center cursor-pointer">
+                  <Upload className="w-5 h-5 mr-2" />
+                  Importar datos
+                  <input
+                    type="file"
+                    accept=".json"
+                    onChange={handleImportData}
+                    className="hidden"
+                  />
+                </label>
               </div>
+            </div>
+            
+            {/* Tabs */}
+            <div className="border-t border-gray-200 mt-6 pt-6">
+              <nav className="flex space-x-8">
+                <button
+                  onClick={() => setActiveTab('services')}
+                  className={`py-2 px-1 font-medium transition-colors ${
+                    activeTab === 'services'
+                      ? 'border-b-2 border-kibu-primary text-kibu-primary'
+                      : 'text-kibu-gray hover:text-kibu-primary'
+                  }`}
+                >
+                  Servicios ({services.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab('messages')}
+                  className={`py-2 px-1 font-medium transition-colors ${
+                    activeTab === 'messages'
+                      ? 'border-b-2 border-kibu-primary text-kibu-primary'
+                      : 'text-kibu-gray hover:text-kibu-primary'
+                  }`}
+                >
+                  Mensajes ({messages.length})
+                  {messages.filter(m => !m.leido).length > 0 && (
+                    <span className="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-1">
+                      {messages.filter(m => !m.leido).length}
+                    </span>
+                  )}
+                </button>
+              </nav>
             </div>
           </div>
 
-          {/* Tabla de servicios existente */}
-          <div className="bg-white rounded-lg shadow-kibu-card mb-8">
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-2xl font-bold text-kibu-dark">Servicios existentes</h2>
-                <div className="flex items-center text-sm text-kibu-gray">
-                  Mostrando {filteredServices.length} de {services.length} servicios
-                </div>
-              </div>
+          {/* Controles y búsqueda */}
+          <div className="bg-white rounded-lg shadow-kibu-card p-6 mb-8">
+            <div className="flex flex-col md:flex-row gap-4">
               
-              <div className="relative">
+              {/* Buscador */}
+              <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type="text"
                   placeholder="Buscar servicios..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-kibu-primary focus:border-transparent"
+                  className="kibu-input pl-10"
                 />
               </div>
-            </div>
 
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-kibu-light-gray">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-kibu-dark uppercase tracking-wider">
-                      Nombre
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-kibu-dark uppercase tracking-wider">
-                      Precio
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-kibu-dark uppercase tracking-wider">
-                      Promoción
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-kibu-dark uppercase tracking-wider">
-                      Porcentaje de descuento
-                    </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-kibu-dark uppercase tracking-wider">
-                      Acciones
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredServices.map((service) => (
-                    <tr key={service.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <img
-                            src={service.imagen}
-                            alt={service.nombre}
-                            className="w-10 h-10 rounded-full object-cover mr-3"
-                          />
-                          <div>
-                            <div className="text-sm font-medium text-kibu-dark">
-                              {service.nombre}
-                            </div>
-                            <div className="text-sm text-kibu-gray">
-                              {service.categoria}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-kibu-dark">
-                        ${formatPrice(service.precio)}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          service.promocion 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-gray-100 text-gray-800'
-                        }`}>
-                          {service.promocion ? 'Sí' : 'No'}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-kibu-dark">
-                        {service.porcentajeDescuento}%
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <div className="flex items-center justify-end space-x-2">
-                          <button
-                            onClick={() => openDetailModal(service)}
-                            className="text-blue-600 hover:text-blue-800 p-1"
-                            title="Ver detalle"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => handleEdit(service)}
-                            className="text-kibu-primary hover:text-kibu-accent p-1"
-                            title="Editar"
-                          >
-                            <Edit className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(service.id)}
-                            className="text-red-600 hover:text-red-800 p-1"
-                            title="Eliminar"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              {/* Información */}
+              <div className="flex items-center text-sm text-kibu-gray">
+                {activeTab === 'services' ? (
+                  <>Mostrando {filteredServices.length} de {services.length} servicios</>
+                ) : (
+                  <>Mostrando {messages.length} mensajes</>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* Modal de detalle del servicio */}
-          {showDetailModal && detailService && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-              <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                
-                {/* Header del modal */}
-                <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-semibold text-kibu-dark">
-                      Detalle del Servicio
-                    </h3>
-                    <button
-                      onClick={closeDetailModal}
-                      className="text-gray-400 hover:text-gray-600 text-2xl"
-                    >
-                      ×
-                    </button>
-                  </div>
-                </div>
-
-                {/* Contenido del modal */}
-                <div className="p-6">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    
-                    {/* Columna izquierda - Imagen e información básica */}
-                    <div className="space-y-6">
-                      
-                      {/* Imagen */}
-                      <div className="aspect-video rounded-lg overflow-hidden bg-gray-100">
-                        <img
-                          src={detailService.imagen}
-                          alt={detailService.nombre}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-
-                      {/* Información básica */}
-                      <div className="bg-kibu-light-gray rounded-lg p-4">
-                        <h4 className="font-semibold text-kibu-dark mb-3">Información Básica</h4>
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <span className="text-kibu-gray">ID:</span>
-                            <span className="text-kibu-dark font-medium">{detailService.id}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-kibu-gray">Categoría:</span>
-                            <span className="text-kibu-dark font-medium capitalize">{detailService.categoria}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-kibu-gray">Disponibles:</span>
-                            <span className="text-kibu-dark font-medium">{detailService.disponible}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Precios */}
-                      <div className="bg-kibu-light-gray rounded-lg p-4">
-                        <h4 className="font-semibold text-kibu-dark mb-3">Precios</h4>
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <span className="text-kibu-gray">Precio base:</span>
-                            <span className="text-kibu-dark font-medium">
-                              COP {formatPrice(detailService.precio)}
-                            </span>
-                          </div>
-                          {detailService.promocion && (
-                            <>
-                              <div className="flex justify-between">
-                                <span className="text-kibu-gray">Descuento:</span>
-                                <span className="text-green-600 font-medium">
-                                  {detailService.porcentajeDescuento}%
-                                </span>
+          {/* Tabla de servicios o mensajes */}
+          {activeTab === 'services' ? (
+            <div className="bg-white rounded-lg shadow-kibu-card overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-kibu-light-gray">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-kibu-dark uppercase tracking-wider">
+                        Nombre
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-kibu-dark uppercase tracking-wider">
+                        Precio
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-kibu-dark uppercase tracking-wider">
+                        Promoción
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-kibu-dark uppercase tracking-wider">
+                        Porcentaje de descuento
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-kibu-dark uppercase tracking-wider">
+                        Descripción
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-kibu-dark uppercase tracking-wider">
+                        Información adicional
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-kibu-dark uppercase tracking-wider">
+                        Características
+                      </th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-kibu-dark uppercase tracking-wider">
+                        Acciones
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {filteredServices.map((service) => (
+                      <tr key={service.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <img
+                              src={service.imagen}
+                              alt={service.nombre}
+                              className="w-10 h-10 rounded-full object-cover mr-3"
+                            />
+                            <div>
+                              <div className="text-sm font-medium text-kibu-dark">
+                                {service.nombre}
                               </div>
-                              <div className="flex justify-between border-t pt-2">
-                                <span className="text-kibu-gray font-medium">Precio final:</span>
-                                <span className="text-kibu-primary font-bold text-lg">
-                                  COP {calculateFinalPrice(detailService.precio, detailService.porcentajeDescuento)}
-                                </span>
+                              <div className="text-sm text-kibu-gray">
+                                {service.categoria}
                               </div>
-                            </>
-                          )}
-                        </div>
-                        
-                        {/* Estado de promoción */}
-                        <div className="mt-3 pt-3 border-t">
-                          <span className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${
-                            detailService.promocion 
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-kibu-dark">
+                          ${parseInt(service.precio).toLocaleString()}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                            service.promocion 
                               ? 'bg-green-100 text-green-800' 
                               : 'bg-gray-100 text-gray-800'
                           }`}>
-                            {detailService.promocion ? 'En Promoción' : 'Precio Regular'}
+                            {service.promocion ? 'Sí' : 'No'}
                           </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-kibu-dark">
+                          {service.porcentajeDescuento}%
+                        </td>
+                        <td className="px-6 py-4 text-sm text-kibu-gray max-w-xs truncate">
+                          {service.descripcion}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-kibu-gray max-w-xs truncate">
+                          {service.informacionAdicional}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-kibu-gray max-w-xs truncate">
+                          {service.caracteristicas}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <div className="flex items-center justify-end space-x-2">
+                            <button
+                              onClick={() => openServiceForm('edit', service)}
+                              className="text-kibu-primary hover:text-kibu-accent p-1"
+                              title="Editar"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => openModal('delete', service)}
+                              className="text-red-600 hover:text-red-800 p-1"
+                              title="Eliminar"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-white rounded-lg shadow-kibu-card overflow-hidden">
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-kibu-dark mb-4">
+                  Mensajes de Contacto ({messages.length})
+                </h3>
+                {messages.length === 0 ? (
+                  <p className="text-kibu-gray text-center py-8">
+                    No hay mensajes de contacto aún
+                  </p>
+                ) : (
+                  <div className="space-y-4">
+                    {messages.map((message) => (
+                      <div key={message.id} className={`border rounded-lg p-6 ${
+                        !message.leido ? 'border-kibu-primary bg-blue-50' : 'border-gray-200'
+                      }`}>
+                        <div className="flex justify-between items-start mb-4">
+                          <div className="flex items-center space-x-3">
+                            <h4 className="font-semibold text-kibu-dark text-lg">
+                              {message.name}
+                            </h4>
+                            {!message.leido && (
+                              <span className="bg-kibu-primary text-white text-xs px-2 py-1 rounded-full">
+                                Nuevo
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-xs text-kibu-gray">
+                              {new Date(message.fechaEnvio).toLocaleString()}
+                            </span>
+                            {!message.leido && (
+                              <button
+                                onClick={() => handleMarkAsRead(message.id)}
+                                className="text-kibu-primary hover:text-kibu-accent p-1"
+                                title="Marcar como leído"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                          <div className="bg-gray-50 p-3 rounded">
+                            <strong className="text-kibu-dark text-sm block mb-1">Email:</strong>
+                            <p className="text-kibu-gray">{message.email}</p>
+                          </div>
+                          <div className="bg-gray-50 p-3 rounded">
+                            <strong className="text-kibu-dark text-sm block mb-1">Teléfono:</strong>
+                            <p className="text-kibu-gray">{message.phone}</p>
+                          </div>
+                          <div className="bg-gray-50 p-3 rounded">
+                            <strong className="text-kibu-dark text-sm block mb-1">Empresa:</strong>
+                            <p className="text-kibu-gray">{message.company || 'N/A'}</p>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                          <div className="bg-gray-50 p-3 rounded">
+                            <strong className="text-kibu-dark text-sm block mb-1">Servicio:</strong>
+                            <p className="text-kibu-gray">{message.service}</p>
+                          </div>
+                        </div>
+
+                        <div className="bg-gray-50 p-4 rounded">
+                          <strong className="text-kibu-dark text-sm block mb-2">Mensaje:</strong>
+                          <p className="text-kibu-gray leading-relaxed">{message.message}</p>
                         </div>
                       </div>
-                    </div>
-
-                    {/* Columna derecha - Descripciones y características */}
-                    <div className="space-y-6">
-                      
-                      {/* Nombre del servicio */}
-                      <div>
-                        <h3 className="text-2xl font-bold text-kibu-dark mb-2">
-                          {detailService.nombre}
-                        </h3>
-                      </div>
-
-                      {/* Descripción */}
-                      <div>
-                        <h4 className="font-semibold text-kibu-dark mb-3">Descripción</h4>
-                        <p className="text-kibu-gray leading-relaxed">
-                          {detailService.descripcion}
-                        </p>
-                      </div>
-
-                      {/* Información adicional */}
-                      <div>
-                        <h4 className="font-semibold text-kibu-dark mb-3">Información Adicional</h4>
-                        <p className="text-kibu-gray leading-relaxed">
-                          {detailService.informacionAdicional}
-                        </p>
-                      </div>
-
-                      {/* Características */}
-                      <div>
-                        <h4 className="font-semibold text-kibu-dark mb-3">Características</h4>
-                        <div className="bg-kibu-light-gray rounded-lg p-4">
-                          <ul className="space-y-2">
-                            {detailService.caracteristicas.split(',').map((caracteristica, index) => (
-                              <li key={index} className="flex items-center text-kibu-gray">
-                                <div className="w-2 h-2 bg-kibu-primary rounded-full mr-3"></div>
-                                {caracteristica.trim()}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
+                    ))}
                   </div>
+                )}
+              </div>
+            </div>
+          )}
 
-                  {/* Botones de acción */}
-                  <div className="flex justify-end space-x-3 mt-8 pt-6 border-t border-gray-200">
-                    <button
-                      onClick={closeDetailModal}
-                      className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
-                    >
-                      Cerrar
-                    </button>
-                    <button
-                      onClick={() => {
-                        closeDetailModal();
-                        handleEdit(detailService);
-                      }}
-                      className="px-4 py-2 bg-kibu-primary text-white rounded-md hover:bg-kibu-accent transition-colors inline-flex items-center"
-                    >
-                      <Edit className="w-4 h-4 mr-2" />
-                      Editar Servicio
-                    </button>
-                  </div>
+          {/* Formulario de servicios */}
+          <ServiceForm
+            isOpen={showServiceForm}
+            onClose={closeServiceForm}
+            onSave={handleSaveService}
+            service={selectedService}
+            mode={formMode}
+          />
+
+          {/* Modal de confirmación de eliminación */}
+          {showModal && modalType === 'delete' && selectedService && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+                <h3 className="text-lg font-semibold text-kibu-dark mb-4">
+                  Confirmar eliminación
+                </h3>
+                <p className="text-kibu-gray mb-6">
+                  ¿Estás seguro de que deseas eliminar el servicio "{selectedService.nombre}"? 
+                  Esta acción no se puede deshacer.
+                </p>
+                <div className="flex justify-end space-x-3">
+                  <button
+                    onClick={closeModal}
+                    className="kibu-btn-secondary"
+                    disabled={isLoading}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    onClick={() => handleDelete(selectedService.id)}
+                    className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'Eliminando...' : 'Eliminar'}
+                  </button>
                 </div>
               </div>
             </div>

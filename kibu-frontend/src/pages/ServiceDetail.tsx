@@ -1,25 +1,94 @@
 // src/pages/ServiceDetail.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, Check, Star } from 'lucide-react';
-import { servicesData } from '../data/servicesData';
+import { ArrowLeft, Check, Star, Loader } from 'lucide-react';
+import { dataService } from '../services/dataService';
+
+interface ServiceDetailData {
+  id: number;
+  title: string;
+  price: string;
+  description: string;
+  longDescription: string;
+  image: string;
+  isPromotion: boolean;
+  promotionPercentage?: number;
+  originalPrice?: string;
+  availability: number;
+  features: string[];
+  additionalInfo: string;
+  gallery: string[];
+}
 
 const ServiceDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState('description');
-  
-  // Buscar el servicio por ID
-  const serviceData = servicesData.find(service => service.id === Number(id));
-  
-  // Si no se encuentra el servicio, mostrar error
-  if (!serviceData) {
+  const [serviceData, setServiceData] = useState<ServiceDetailData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    loadService();
+  }, [id]);
+
+  const loadService = async () => {
+    if (!id) return;
+    
+    try {
+      setLoading(true);
+      const service = await dataService.getServiceById(parseInt(id));
+      
+      if (service) {
+        // Convertir Service a ServiceDetailData
+        const detailData: ServiceDetailData = {
+          id: service.id,
+          title: service.nombre,
+          price: `$ ${parseInt(service.precio).toLocaleString()}`,
+          originalPrice: service.promocion ? `$ ${(parseInt(service.precio) * 2).toLocaleString()}` : undefined,
+          description: service.descripcion,
+          longDescription: service.informacionAdicional,
+          image: service.imagen,
+          isPromotion: service.promocion,
+          promotionPercentage: service.porcentajeDescuento,
+          availability: service.disponible,
+          features: service.caracteristicas.split(', '),
+          additionalInfo: service.informacionAdicional,
+          gallery: [
+            "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600&h=400&fit=crop&crop=center",
+            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&crop=center"
+          ]
+        };
+        
+        setServiceData(detailData);
+      } else {
+        setError('Servicio no encontrado');
+      }
+    } catch (err) {
+      setError('Error al cargar el servicio');
+      console.error('Error loading service:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-kibu-dark mb-4">Servicio no encontrado</h2>
-          <p className="text-kibu-gray mb-6">El servicio que buscas no existe o ha sido removido.</p>
+          <Loader className="w-8 h-8 animate-spin text-kibu-primary mx-auto mb-4" />
+          <p className="text-kibu-gray">Cargando servicio...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !serviceData) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">{error || 'Servicio no encontrado'}</p>
           <Link to="/servicios" className="kibu-btn-primary">
-            Ver todos los servicios
+            Volver a servicios
           </Link>
         </div>
       </div>
@@ -121,10 +190,10 @@ const ServiceDetail: React.FC = () => {
 
               {/* Botones de acción */}
               <div className="flex flex-col sm:flex-row gap-4 pt-6">
-              
-                <Link to="/contacto" className="kibu-btn-primary flex-1">
-                Contratar
+              <Link to="/contacto" className="kibu-btn-primary flex-1">
+              Contratar
                 </Link>
+               
                 <Link to="/servicios" className="kibu-btn-secondary flex-1 text-center">
                   Servicios
                 </Link>
@@ -135,6 +204,8 @@ const ServiceDetail: React.FC = () => {
                 to="/servicios"
                 className="inline-flex items-center text-kibu-primary hover:text-kibu-accent transition-colors"
               >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Regresar al catálogo
               </Link>
             </div>
           </div>

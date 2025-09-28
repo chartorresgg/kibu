@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from 'lucide-react';
+import { dataService } from '../services/dataService';
 
 interface ContactForm {
   name: string;
@@ -30,15 +31,10 @@ const Contact: React.FC = () => {
     'Aplicaciones Móviles',
     'Transformación Digital',
     'Inteligencia Artificial',
-    'Tienda Online',
-    'Seguridad de datos',
-    'DevOps',
-    'Servicios Cloud',
     'Análisis de Datos',
-    'Desarrollo de APIs',
-    'Microservicios',
-    'Soporte Técnico',
-    'Otros'
+    'Servicios Cloud',
+    'Consultoría IT',
+    'Otro'
   ];
 
   const contactInfo = [
@@ -121,19 +117,32 @@ const Contact: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Simulación de envío (en una app real sería una llamada a la API)
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      console.log('Enviando mensaje:', formData); // Debug
+      const success = await dataService.submitContactMessage(formData);
+      console.log('Respuesta del servicio:', success); // Debug
       
-      setIsSubmitted(true);
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        company: '',
-        service: '',
-        message: ''
-      });
+      if (success) {
+        console.log('Mensaje guardado exitosamente'); // Debug
+        // Verificar que se guardó en localStorage
+        const messages = localStorage.getItem('kibu_messages');
+        console.log('Mensajes en localStorage:', messages); // Debug
+        
+        setIsSubmitted(true);
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          company: '',
+          service: '',
+          message: ''
+        });
+      } else {
+        setErrors({
+          general: 'Error al enviar el mensaje. Intenta nuevamente.'
+        });
+      }
     } catch (error) {
+      console.error('Error al enviar mensaje:', error); // Debug
       setErrors({
         general: 'Error al enviar el mensaje. Intenta nuevamente.'
       });
@@ -170,21 +179,24 @@ const Contact: React.FC = () => {
     <div className="min-h-screen bg-white">
       
       {/* Header de la página */}
-      <section className="relative py-24 bg-cover bg-center bg-no-repeat" style={{
-  backgroundImage: 'url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80")'
-}}>
-  <div className="absolute inset-0 bg-black bg-opacity-50"></div>
-  <div className="relative kibu-container">
-    <div className="text-center text-white">
-      <h1 className="text-4xl lg:text-5xl font-bold mb-4">Contacto</h1>
-      <nav className="flex justify-center items-center space-x-2 text-gray-200">
-        <Link to="/" className="hover:text-white transition-colors">Inicio</Link>
-        <span>{'>'}</span>
-        <span className="text-white font-medium">Contacto</span>
-      </nav>
-    </div>
-  </div>
-</section>
+      <section className="bg-gradient-to-r from-kibu-secondary to-white py-16">
+        <div className="kibu-container">
+          <div className="text-center">
+            <h1 className="text-4xl lg:text-5xl font-bold text-kibu-dark mb-4">
+              Contacto
+            </h1>
+            
+            {/* Breadcrumb */}
+            <nav className="flex justify-center items-center space-x-2 text-kibu-gray">
+              <Link to="/" className="hover:text-kibu-primary transition-colors">
+                Inicio
+              </Link>
+              <span>{'>'}</span>
+              <span className="text-kibu-dark font-medium">Contacto</span>
+            </nav>
+          </div>
+        </div>
+      </section>
 
       {/* Contenido principal */}
       <section className="py-20">
@@ -378,8 +390,6 @@ const Contact: React.FC = () => {
                   ))}
                 </div>
               </div>
-
-          
 
               {/* Horario destacado */}
               <div className="bg-kibu-light-gray rounded-lg p-6">

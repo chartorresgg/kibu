@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
+import { dataService } from '../services/dataService';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -59,17 +60,12 @@ const Login: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Simulación de autenticación (en una app real sería una llamada a la API)
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const result = await dataService.login(formData.email, formData.password);
       
-      // Verificación básica de credenciales demo
-      if (formData.email === 'admin@kibu.com' && formData.password === 'admin123') {
-        // Guardar token de autenticación (simulado)
-        localStorage.setItem('kibu_admin_token', 'demo_token_123');
-        localStorage.setItem('kibu_admin_user', JSON.stringify({
-          email: formData.email,
-          name: 'Administrador Kibu'
-        }));
+      if (result) {
+        // Guardar token de autenticación
+        localStorage.setItem('kibu_admin_token', result.token);
+        localStorage.setItem('kibu_admin_user', JSON.stringify(result.user));
         
         // Redirigir al panel de administración
         navigate('/admin');
@@ -242,7 +238,7 @@ const Login: React.FC = () => {
             <div className="hidden lg:block">
               <div className="relative">
                 <img 
-                  src="/loggin.png"
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=800&fit=crop&crop=center"
                   alt="Administrador Kibu"
                   className="w-full h-auto rounded-2xl shadow-2xl"
                 />

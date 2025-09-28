@@ -1,0 +1,13 @@
+{
+    "users": [
+      {
+        "id": 1,
+        "email": "admin@kibu.com",
+        "password": "admin123",
+        "nombre": "Administrador KiBu",
+        "rol": "admin",
+        "fechaCreacion": "2024-01-01",
+        "ultimoAcceso": null
+      }
+    ]
+  }

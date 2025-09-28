@@ -177,7 +177,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Sección "Conoce más de Kibu" con carrusel */}
-      <section className="py-20 bg-kibu-light-gray">
+      <section className="bg-kibu-guarantee-bg">
         <div className="kibu-container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             

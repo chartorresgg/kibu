@@ -1,0 +1,15 @@
+{
+    "messages": [
+      {
+        "id": 1,
+        "nombre": "Juan Pérez",
+        "email": "juan@empresa.com",
+        "telefono": "+57 300 123 4567",
+        "empresa": "Empresa ABC",
+        "servicio": "Aplicaciones Web",
+        "mensaje": "Necesito una aplicación web para mi empresa",
+        "fechaEnvio": "2024-03-15T10:30:00Z",
+        "leido": false
+      }
+    ]
+  }
