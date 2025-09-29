@@ -4,40 +4,62 @@
 
 Kibu es una aplicación web desarrollada para una empresa de soluciones tecnológicas que se especializa en desarrollo de software personalizado, aplicaciones web, móviles y sistemas que automatizan procesos empresariales. El frontend está construido con React, TypeScript y Tailwind CSS, proporcionando una experiencia de usuario fluida y profesional.
 
+La aplicación implementa un sistema completo de gestión de servicios con persistencia de datos simulada mediante localStorage, permitiendo funcionalidad completa sin requerir infraestructura backend.
+
+## 🌐 Aplicación en Línea
+
+La aplicación está desplegada y disponible públicamente en:
+
+**🔗 [https://kibu-frontend.vercel.app/](https://kibu-frontend.vercel.app/)**
+
+- ✅ Acceso 24/7 sin restricciones
+- ✅ Optimizada con CDN global
+- ✅ Certificado SSL/HTTPS automático
+- ✅ Compatible con todos los dispositivos
+
 ## 🚀 Características Principales
 
 - ✨ **Interfaz Moderna**: Diseño responsivo y atractivo basado en mockups de Figma
 - 🏠 **Página Principal**: Hero section con carrusel interactivo y servicios destacados
-- 📊 **Catálogo de Servicios**: Grid responsivo con filtros, búsqueda y paginación
-- 📄 **Detalle de Servicios**: Información completa con galería de imágenes
-- 🏢 **Página Institucional**: Información de la empresa, equipo y valores
-- 📞 **Formulario de Contacto**: Validación en tiempo real y confirmación de envío
-- 🔐 **Panel Administrativo**: Sistema CRUD completo para gestión de servicios
+- 📊 **Catálogo de Servicios**: Grid responsivo con filtros, búsqueda y paginación avanzada
+- 📄 **Detalle de Servicios**: Información completa con galería de imágenes y tabs informativos
+- 🏢 **Página Institucional**: Información de la empresa, equipo y valores corporativos
+- 📞 **Sistema de Contacto**: Formulario con validación completa y gestión de mensajes
+- 🔐 **Panel Administrativo**: Sistema CRUD completo para gestión de servicios y mensajes
+- 💾 **Persistencia de Datos**: Sistema de almacenamiento local con localStorage
 - 📱 **Diseño Responsivo**: Optimizado para móviles, tablets y desktop
+- 🔄 **Backup y Restauración**: Funcionalidades de exportar/importar datos
+- 🌐 **Deploy Automático**: Integración continua con Vercel desde GitHub
 
 ## 🛠️ Tecnologías Utilizadas
 
 ### Core Technologies
-- **React 18.2.0** - Librería para interfaces de usuario
-- **TypeScript 5.0.2** - Superset de JavaScript con tipado estático
-- **Vite 4.4.5** - Herramienta de construcción y desarrollo
+- **React 19.1.1** - Librería para interfaces de usuario
+- **TypeScript 5.8.3** - Superset de JavaScript con tipado estático
+- **Vite 7.1.6** - Herramienta de construcción y desarrollo
 
 ### Styling & UI
-- **Tailwind CSS 3.4.0** - Framework CSS utility-first
-- **Lucide React 0.263.1** - Librería de iconos SVG
+- **Tailwind CSS 3.4.17** - Framework CSS utility-first
+- **Lucide React 0.544.0** - Librería de iconos SVG
 
 ### Routing & Navigation
-- **React Router DOM 6.15.0** - Enrutamiento del lado cliente
+- **React Router DOM 7.9.1** - Enrutamiento del lado cliente
 
 ### Development Tools
 - **ESLint** - Linter para calidad de código
 - **PostCSS** - Procesador de CSS
 - **Autoprefixer** - Prefijos CSS automáticos
 
+### Deployment & Hosting
+- **Vercel** - Plataforma de hosting con deploy automático
+- **GitHub Actions** - Integración continua
+
 ## 📁 Estructura del Proyecto
 
 ```
 kibu-frontend/
+├── docs/                     # Documentación del proyecto
+│   └── ManualUsuario/        # Manual completo de la aplicación
 ├── public/                   # Archivos estáticos
 │   ├── logo.png              # Logo corporativo
 ├── src/                      # Código fuente
@@ -57,11 +79,14 @@ kibu-frontend/
 │   │   ├── Contact.tsx       # Página de contacto
 │   │   ├── Login.tsx         # Autenticación
 │   │   └── AdminPanel.tsx    # Panel administrativo
+│   ├── services/             # Servicios de datos
+│   │   └── dataService.ts    # API simulada con localStorage
 │   ├── types/                # Definiciones TypeScript
 │   │   └── service.ts        # Tipos de servicios
 │   ├── App.tsx               # Componente principal
 │   ├── main.tsx              # Punto de entrada
 │   └── index.css             # Estilos globales
+├── vercel.json               # Configuración de Vercel
 ├── package.json              # Dependencias y scripts
 ├── tailwind.config.js        # Configuración Tailwind
 ├── tsconfig.json             # Configuración TypeScript
@@ -69,50 +94,82 @@ kibu-frontend/
 └── README.md                 # Documentación
 ```
 
+## 💾 Sistema de Persistencia de Datos
+
+La aplicación implementa un sistema avanzado de persistencia usando **localStorage** del navegador que simula una base de datos completa:
+
+### Características del Sistema de Datos
+- **🗄️ Almacenamiento Local**: Datos persistentes en localStorage del navegador
+- **⚡ Operaciones CRUD**: Create, Read, Update, Delete de servicios completamente funcionales
+- **🔄 Simulación de API**: Funciones asíncronas con delays realistas
+- **💼 Gestión de Servicios**: 12 servicios precargados con información completa
+- **📬 Sistema de Mensajes**: Almacenamiento y gestión de mensajes de contacto de usuarios
+- **🔐 Autenticación**: Sistema de tokens y sesiones para administrador
+- **📤 Backup/Restore**: Exportar e importar datos de servicios en formato JSON
+
+### Claves de Almacenamiento
+- `kibu_services` - Catálogo completo de servicios
+- `kibu_messages` - Mensajes de contacto recibidos
+- `kibu_admin_token` - Token de autenticación administrativa
+- `kibu_admin_user` - Datos del usuario administrador
+
+### Ventajas del Sistema
+- ✅ Funcionalidad completa sin servidor backend
+- ✅ Persistencia real durante la sesión
+- ✅ Ideal para demostraciones y evaluación
+- ✅ Datos visibles en DevTools para debugging
+
 ## 🎨 Páginas y Funcionalidades
 
 ### 🏠 Página Principal (Home)
-- Hero section con mensaje de bienvenida
+- Hero section con mensaje de bienvenida animado
 - Carrusel interactivo de imágenes corporativas
-- Sección de servicios destacados
+- Sección de servicios destacados con promociones
 - Información institucional con call-to-action
+- Estadísticas de la empresa en tiempo real
 
 ### 📊 Catálogo de Servicios
-- Grid responsivo de servicios (4-2-1 columnas)
+- Grid responsivo de servicios (12-8-4 por página)
 - Sistema de búsqueda en tiempo real
-- Filtros por categoría y tipo
-- Paginación dinámica
-- Indicadores visuales (promociones, nuevos servicios)
+- Filtros por categoría y ordenamiento (precio, nombre)
+- Paginación dinámica con controles avanzados
+- Indicadores visuales (promociones, descuentos, disponibilidad)
 
 ### 📄 Detalle del Servicio
 - Galería de imágenes con navegación
-- Información técnica completa
-- Características y especificaciones
-- Botones de acción (contratar, volver)
-- Navegación breadcrumb
+- Tabs de información (descripción, información adicional, características)
+- Precios con descuentos calculados automáticamente
+- Botones de acción (contactar, volver)
+- Navegación breadcrumb funcional
 
 ### 🏢 Página Nosotros
 - Historia y misión de la empresa
-- Estadísticas corporativas
-- Valores y principios
-- Equipo de trabajo
-- Call-to-action para contacto
+- Estadísticas corporativas animadas
+- Valores y principios con iconografía
+- Equipo de trabajo con perfiles
+- Call-to-action para contacto directo
 
-### 📞 Contacto
-- Formulario completo con validación
-- Información de contacto
-- Horarios de atención
-- Mapa de ubicación (placeholder)
-- Confirmación de envío
+### 📞 Sistema de Contacto
+- Formulario completo con validación en tiempo real
+- Campos: nombre, email, teléfono, empresa, servicio, mensaje
+- Confirmación de envío con página de éxito
+- Almacenamiento automático en localStorage
+- Información de contacto y horarios
 
 ### 🔐 Sistema Administrativo
-- **Login**: Autenticación segura con validación
-- **Panel CRUD**: Gestión completa de servicios
-  - Crear nuevos servicios
-  - Editar servicios existentes
-  - Eliminar con confirmación
-  - Búsqueda y filtrado
-  - Tabla responsiva
+- **Login Seguro**: Autenticación con validación completa
+- **Panel CRUD Avanzado**: Gestión completa de servicios
+  - ➕ Crear nuevos servicios con formulario modal
+  - ✏️ Editar servicios existentes
+  - 🗑️ Eliminar con confirmación de seguridad
+  - 🔍 Búsqueda instantánea y filtrado
+  - 📊 Tabla responsiva con todas las propiedades
+- **Gestión de Mensajes**: Tab dedicado para mensajes de contacto
+  - 📬 Visualización de todos los mensajes recibidos
+  - 👁️ Marcar como leído/no leído
+  - 📅 Ordenamiento cronológico
+  - 📋 Información completa del remitente
+- **Backup de Datos**: Exportar/importar datos completos
 
 ## 🚦 Instalación y Configuración
 
@@ -120,13 +177,13 @@ kibu-frontend/
 - Node.js >= 18.0.0
 - npm >= 8.0.0
 
-### Instalación
+### Instalación Local
 ```bash
 # Clonar el repositorio
 git clone https://github.com/chartorresgg/kibu.git
 
 # Navegar al directorio del proyecto
-cd kibu/kibu-frontend
+cd kibu-frontend
 
 # Instalar dependencias
 npm install
@@ -150,8 +207,16 @@ npm run lint         # Verificación con ESLint
 
 ## 🌐 URLs de la Aplicación
 
-Una vez iniciado el servidor de desarrollo:
+### Producción (Vercel)
+- **🌍 Aplicación Principal**: https://kibu-frontend.vercel.app/
+- **🏠 Home**: https://kibu-frontend.vercel.app/
+- **📊 Servicios**: https://kibu-frontend.vercel.app/servicios
+- **🏢 Nosotros**: https://kibu-frontend.vercel.app/nosotros
+- **📞 Contacto**: https://kibu-frontend.vercel.app/contacto
+- **🔐 Login**: https://kibu-frontend.vercel.app/login
+- **⚙️ Admin Panel**: https://kibu-frontend.vercel.app/admin
 
+### Desarrollo Local
 - **Home**: `http://localhost:5173/`
 - **Servicios**: `http://localhost:5173/servicios`
 - **Nosotros**: `http://localhost:5173/nosotros`
@@ -165,22 +230,35 @@ Para acceder al panel administrativo:
 - **Email**: `admin@kibu.com`
 - **Contraseña**: `admin123`
 
+## 📖 Manual de Usuario
+
+Se ha desarrollado un **manual completo de 20+ páginas** que incluye:
+
+### 📂 Ubicación
+El manual se encuentra en: **`docs/ManualUsuario/`**
+
+### 📋 Contenido del Manual
+- **Introducción y arquitectura** del sistema
+- **Guías de navegación** para usuarios y administradores
+- **Instrucciones de configuración** y requerimientos
+- **Funcionalidades detalladas** de cada módulo
+- **Sistema de persistencia** con localStorage
+- **Despliegue en Vercel** y acceso en línea
+- **Solución de problemas** y troubleshooting
+- **Especificaciones técnicas** y APIs internas
+
+### 🎯 Audiencias del Manual
+- **Usuarios finales**: Navegación y uso de servicios
+- **Administradores**: Gestión de contenido y mensajes
+- **Desarrolladores**: Mantenimiento y extensiones
+- **Evaluadores**: Revisión académica y técnica
+
 ## 🎨 Configuración de Diseño
 
-### Colores Corporativos
-```css
-/* Paleta de colores Kibu */
---kibu-primary: #B8860B     /* Dorado principal */
---kibu-secondary: #F5F5DC   /* Beige claro */
---kibu-accent: #D4A574      /* Dorado claro */
---kibu-dark: #2C2C2C        /* Texto principal */
---kibu-gray: #6B7280        /* Texto secundario */
-```
-
 ### Breakpoints Responsivos
-- **Mobile**: 375px
-- **Tablet**: 768px  
-- **Desktop**: 1440px
+- **Mobile**: 320px - 767px
+- **Tablet**: 768px - 1023px  
+- **Desktop**: 1024px+
 
 ### Tipografía
 - **Fuente Principal**: Inter (Google Fonts)
@@ -189,51 +267,69 @@ Para acceder al panel administrativo:
 ## 📱 Responsividad
 
 La aplicación está completamente optimizada para:
-- 📱 **Móviles**: Layout de 1 columna, menú hamburguesa
+- 📱 **Móviles**: Layout de 1 columna, menú hamburguesa, touch-friendly
 - 📱 **Tablets**: Layout de 2 columnas, navegación adaptada
-- 💻 **Desktop**: Layout completo de 3-4 columnas
+- 💻 **Desktop**: Layout completo de 3-4 columnas, máxima funcionalidad
 
-## 🔧 Funcionalidades Técnicas
+## 🔧 Funcionalidades Técnicas Avanzadas
 
 ### Componentes Destacados
 
-#### Carrusel de Imágenes
-- Navegación manual con flechas
-- Reproducción automática configurable
-- Indicadores de posición (dots)
-- Contador de imágenes
-- Transiciones suaves
+#### Carrusel de Imágenes Interactivo
+- Navegación manual con flechas direccionales
+- Reproducción automática configurable (4 segundos)
+- Indicadores de posición (dots) interactivos
+- Contador de imágenes dinámico
+- Transiciones suaves con CSS
 
-#### Formularios Inteligentes
-- Validación en tiempo real
-- Manejo de estados de carga
-- Mensajes de error específicos
-- Confirmaciones de éxito
-- Limpieza automática tras envío
+#### Sistema de Formularios Inteligentes
+- Validación en tiempo real con feedback visual
+- Manejo de estados de carga con spinners
+- Mensajes de error específicos por campo
+- Confirmaciones de éxito con páginas dedicadas
+- Limpieza automática tras envío exitoso
 
-#### Sistema CRUD
-- Tabla responsiva con scroll
-- Modales para crear/editar
-- Confirmaciones para eliminar
-- Búsqueda instantánea
-- Filtrado por categorías
+#### Sistema CRUD Administrativo
+- Tabla responsiva con scroll horizontal
+- Modales reactivos para crear/editar servicios
+- Confirmaciones de seguridad para eliminar
+- Búsqueda instantánea por múltiples campos
+- Filtrado por categorías con contadores
 
-## 🚀 Despliegue
+#### Sistema de Paginación Avanzado
+- Controles de cantidad de elementos (4, 8, 12)
+- Navegación por números de página
+- Botones anterior/siguiente
+- Indicadores de posición y total
 
-### Build de Producción
-```bash
-npm run build
+## 🚀 Despliegue en Vercel
+
+### Configuración de Build
+```json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite"
+}
 ```
 
-El build optimizado se genera en la carpeta `dist/` y está listo para despliegue en cualquier servidor web estático.
+### Deploy Automático
+- ✅ Integración continua con GitHub
+- ✅ Deploy automático en cada push a main
+- ✅ Preview deployments para ramas de desarrollo
+- ✅ Rollback instantáneo disponible
+
+### Optimizaciones Aplicadas
+- 🚀 Compresión Gzip y Brotli automática
+- 🌐 CDN global para carga rápida
+- 📊 Core Web Vitals optimizados
+- 🔒 HTTPS automático con certificado SSL
 
 ### Variables de Entorno
 ```env
-# .env.development
-VITE_API_URL=http://localhost:3000/api
-
-# .env.production  
-VITE_API_URL=https://api.kibu.com
+# Configuración de Vite
+VITE_APP_TITLE=Kibu - Soluciones Tecnológicas
+VITE_APP_VERSION=1.0.0
 ```
 
 ## 🤝 Contribución
@@ -241,7 +337,7 @@ VITE_API_URL=https://api.kibu.com
 ### Estándares de Código
 - **ESLint**: Configuración estricta para React/TypeScript
 - **Prettier**: Formato automático de código
-- **Commits**: Mensajes descriptivos en español
+- **Commits**: Mensajes descriptivos siguiendo convención
 - **Branches**: Feature branches para nuevas funcionalidades
 
 ### Flujo de Trabajo
@@ -253,21 +349,42 @@ VITE_API_URL=https://api.kibu.com
 
 ## 📄 Licencia
 
-Este proyecto es privado y pertenece a Kibu. Todos los derechos reservados.
+Este proyecto es desarrollado para fines académicos. Todos los derechos reservados.
 
 ## 👥 Equipo de Desarrollo
 
 - **Desarrollador Full-Stack**: Carlos Eduardo Guzmán Torres
-- **Diseño UI/UX**: Mockups de Figma
+- **Diseño UI/UX**: Mockups desarrollados en Figma
 - **Repositorio**: https://github.com/chartorresgg/kibu
+- **Deploy**: https://kibu-frontend.vercel.app/
 
-## 🔄 Próximas Funcionalidades
+## 🔄 Funcionalidades Completadas
 
-- [ ] Integración con API backend
-- [ ] Base de datos MySQL
-- [ ] Autenticación JWT
-- [ ] Persistencia de la información
-- [ ] Manual de usuario
+- ✅ Sistema completo de persistencia con localStorage
+- ✅ CRUD funcional para servicios
+- ✅ Sistema de mensajes de contacto
+- ✅ Autenticación administrativa
+- ✅ Diseño responsive completo
+- ✅ Deploy automático en Vercel
+- ✅ Manual de usuario completo
+- ✅ Backup y restauración de datos
+- ✅ Validación de formularios avanzada
+- ✅ Navegación SPA con React Router
+- ✅ Interfaz de administración completa
+
+## 🚀 Próximas Mejoras Sugeridas
+
+- [ ] Integración con API backend real
+- [ ] Base de datos PostgreSQL/MongoDB
+- [ ] Autenticación JWT con roles
+- [ ] Sistema de notificaciones email
+- [ ] PWA (Progressive Web App)
+- [ ] Modo oscuro/claro
+- [ ] Múltiples idiomas (i18n)
+- [ ] Analytics de uso con Google Analytics
+
 ---
 
-**© 2025 Kibu. Todos los derechos reservados.**
+**🌟 Aplicación disponible en línea: [https://kibu-frontend.vercel.app/](https://kibu-frontend.vercel.app/)**
+
+**© 2025 Kibu - Soluciones Tecnológicas. Desarrollado para fines académicos.**
