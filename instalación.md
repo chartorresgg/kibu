@@ -148,10 +148,8 @@ Para detener el servidor de desarrollo:
 
 ## Próximos Pasos
 
-- Lee el [Manual de Usuario](./docs/ManualUsuario/) para conocer todas las funcionalidades
+- Lee el [Manual de Usuario](./kibu-frontend/docs/ManualUsuario/Kibu_ManualdeUsuario.pdf) para conocer todas las funcionalidades
 - Explora el código en la carpeta `src/`
 - Revisa el archivo `README.md` principal para información completa del proyecto
 
 ---
-
-**¿Necesitas ayuda?** Consulta la sección de Issues en GitHub: https://github.com/chartorresgg/kibu/issues
