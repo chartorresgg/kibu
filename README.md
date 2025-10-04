@@ -422,7 +422,7 @@ Este proyecto es desarrollado para fines académicos. Todos los derechos reserva
 - [Entrega final - Escenario 7](./kibu-frontend/docs/Documentación%20de%20entrega/Entrega%20final%20-%20Escenario%207.pdf)
 
 ### Enlaces Útiles
-- [Figma Mockups](./kibu-frontend/docs/Mockups/Kibu%20-%20Mockup.fig)
+- [Figma Mockups](./kibu-frontend/docs/Mockups/)
 - [Repositorio GitHub](https://github.com/chartorresgg/kibu)
 - [Deploy en Vercel](https://kibu-frontend.vercel.app/)
 - [Documentación de React](https://react.dev)
