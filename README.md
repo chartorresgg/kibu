@@ -383,6 +383,18 @@ Este proyecto es desarrollado para fines académicos. Todos los derechos reserva
 - [ ] Múltiples idiomas (i18n)
 - [ ] Analytics de uso con Google Analytics
 
+## 📚 Recursos Adicionales
+
+### Documentación
+- [Manual de Usuario Completo](./kibu-frontend/docs/ManualUsuario/Kibu_ManualdeUsuario.pdf)
+- [Entrega final - Escenario 7](./kibu-frontend/docs/Documentación%20de%20entrega/Entrega%20final%20-%20Escenario%207.pdf)
+
+### Enlaces Útiles
+- [Figma Mockups](./kibu-frontend/docs/Mockups/)
+- [Repositorio GitHub](https://github.com/chartorresgg/kibu)
+- [Deploy en Vercel](https://kibu-frontend.vercel.app/)
+- [Documentación de React](https://react.dev)
+- [Tailwind CSS Docs](https://tailwindcss.com)
 ---
 
 **🌟 Aplicación disponible en línea: [https://kibu-frontend.vercel.app/](https://kibu-frontend.vercel.app/)**
