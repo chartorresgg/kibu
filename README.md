@@ -31,6 +31,22 @@ La aplicación está desplegada y disponible públicamente en:
 - 🔄 **Backup y Restauración**: Funcionalidades de exportar/importar datos
 - 🌐 **Deploy Automático**: Integración continua con Vercel desde GitHub
 
+## 🏗️ Arquitectura del Sistema
+
+### Patrón de Diseño
+- **Frontend**: SPA (Single Page Application) con React
+- **Estado**: Context API + useState para gestión local
+- **Routing**: React Router DOM con rutas protegidas
+- **Persistencia**: localStorage como capa de datos
+
+### Flujo de Datos
+Usuario → Componente → dataService → localStorage → Respuesta
+
+### Estructura de Capas
+- **Presentación**: Componentes React (pages, components)
+- **Lógica de Negocio**: dataService.ts
+- **Persistencia**: localStorage del navegador
+
 ## 🛠️ Tecnologías Utilizadas
 
 ### Core Technologies
@@ -93,6 +109,20 @@ kibu-frontend/
 ├── vite.config.ts            # Configuración Vite
 └── README.md                 # Documentación
 ```
+
+## 📱 Casos de Uso
+
+### Usuario Final
+1. Explora catálogo de servicios
+2. Filtra y ordena servicios
+3. Visualiza detalles completos
+4. Envía mensaje de contacto
+
+### Administrador
+1. Inicia sesión segura
+2. Gestiona servicios (CRUD)
+3. Visualiza mensajes de contacto
+4. Exporta/importa datos
 
 ## 💾 Sistema de Persistencia de Datos
 
@@ -178,6 +208,8 @@ La aplicación implementa un sistema avanzado de persistencia usando **localStor
 - npm >= 8.0.0
 
 ### Instalación Local
+
+
 ```bash
 # Clonar el repositorio
 git clone https://github.com/chartorresgg/kibu.git
@@ -390,7 +422,7 @@ Este proyecto es desarrollado para fines académicos. Todos los derechos reserva
 - [Entrega final - Escenario 7](./kibu-frontend/docs/Documentación%20de%20entrega/Entrega%20final%20-%20Escenario%207.pdf)
 
 ### Enlaces Útiles
-- [Figma Mockups](./kibu-frontend/docs/Mockups/)
+- [Figma Mockups](./kibu-frontend/docs/Mockups/Kibu%20-%20Mockup.fig)
 - [Repositorio GitHub](https://github.com/chartorresgg/kibu)
 - [Deploy en Vercel](https://kibu-frontend.vercel.app/)
 - [Documentación de React](https://react.dev)
