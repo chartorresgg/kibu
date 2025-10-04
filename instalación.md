@@ -2,7 +2,7 @@
 
 ## Requisitos Previos
 
-Antes de comenzar, asegúrate de tener instalado:
+Antes de comenzar, asegúrate de tener instalado lo siguiente:
 
 - **Node.js** versión 18.0 o superior ([Descargar Node.js](https://nodejs.org/))
 - **npm** versión 8.0 o superior (se instala automáticamente con Node.js)
